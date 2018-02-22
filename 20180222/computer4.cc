@@ -11,7 +11,7 @@ using std::endl;
 class Computer
 {
 public:
-	Computer(const char * brand,float price)
+	Computer(const char *brand,float price)
 //	:_brand(brand)//浅拷贝
 	:_brand(new char[strlen(brand)+1]())//深拷贝
 	,_price(price)
@@ -19,6 +19,15 @@ public:
 		cout << "-------Computer(const char *,float)-------" << endl;
 		strcpy(_brand,brand);
 	}
+
+	Computer(const Computer & rhs)
+	:_brand(new char[strlen(rhs._brand)+1]())
+	,_price(rhs._price)
+	{
+		cout << "---------Computer(const Computer&)" << endl;
+		strcpy(_brand,rhs._brand);
+	}
+
 	~Computer()
 	{
 		cout << "~Computer()" << endl;
@@ -55,17 +64,17 @@ void Computer::setPrice(float price)
 }
 
 //全局对象
-Computer pc2("thinkpad",6666);
+//Computer pc2("thinkpad",6666);
 
 int main(void)
 {
+
 	char brand[]="xiaomi";
 	Computer com(brand,1999);//栈对象
 	com.print();
 //	com.~Computer();//可以不用显示
 
-	Computer *p = new Computer("Mac",10000);//堆对象
-	p->print();
-	delete p;
+	Computer com2=com;
+	com2.print();
 	return 0;
 }
